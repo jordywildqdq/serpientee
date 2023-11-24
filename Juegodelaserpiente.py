@@ -1,107 +1,73 @@
-import pygame
-
-import sys
+import turtle
+import time
 import random
 
-# Inicialización de Pygame
-pygame.init()
+posponer=  0.1
 
-# Configuración de la ventana
-WIDTH, HEIGHT = 800, 600
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Juego de la serpiente")
+#Configuracion de la ventana
 
-# Colores
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
+ven= turtle.Screen()
+ven.title("Serpiente")
+ven.bgcolor("Black")
+ven.setup(width=600, height= 600)
+ven.tracer(0)
 
-# Clase Snake
-class Snake:
-    def __init__(self):
-        self.length = 1
-        self.positions = [((WIDTH // 2), (HEIGHT // 2))]
-        self.direction = random.choice([UP, DOWN, LEFT, RIGHT])
-
-    def get_head_position(self):
-        return self.positions[0]
-
-    def update(self):
-        cur = self.get_head_position()
-        x, y = self.direction
-        new = (((cur[0] + (x*GRIDSIZE)) % WIDTH), (cur[1] + (y*GRIDSIZE)) % HEIGHT)
-        if len(self.positions) > 2 and new in self.positions[2:]:
-            self.reset()
-        else:
-            self.positions.insert(0, new)
-            if len(self.positions) > self.length:
-                self.positions.pop()
-
-    def reset(self):
-        self.length = 1
-        self.positions = [((WIDTH // 2), (HEIGHT // 2))]
-        self.direction = random.choice([UP, DOWN, LEFT, RIGHT])
-
-    def render(self, surface):
-        for p in self.positions:
-            pygame.draw.rect(surface, WHITE, (p[0], p[1], GRIDSIZE, GRIDSIZE))
+#Comida
+Comida=turtle.Turtle()
+Comida.speed(0)
+Comida.shape("circle")
+Comida.color("Red")
+Comida.penup()
+Comida.goto(0,100)
 
 
-# Clase Apple
-class Apple:
-    def __init__(self):
-        self.position = (0, 0)
-        self.color = (255, 0, 0)
-        self.randomize_position()
+#Diseño de la cabeza de la serpiente
+cabeza=turtle.Turtle()
+cabeza.speed(0)
+cabeza.shape("square")
+cabeza.color("White")
+cabeza.penup()
+cabeza.goto(0,0)
+cabeza.direction = "Stop"
 
-    def randomize_position(self):
-        self.position = (random.randint(0, (WIDTH//GRIDSIZE)-1) * GRIDSIZE, random.randint(0, (HEIGHT//GRIDSIZE)-1) * GRIDSIZE)
+#Funciones 
+def arriba():
+    cabeza.direction="up"
+def abajo():
+    cabeza.direction="down"
+def izquierda():
+    cabeza.direction= "left"
+def derecha():
+    cabeza.direction= "right"
+def mov():
+    if cabeza.direction == "up":
+        y=cabeza.ycor()
+        cabeza.sety(y+20)
+    if cabeza.direction == "down":
+        y=cabeza.ycor()
+        cabeza.sety(y-20)
+    if cabeza.direction == "left":
+        x=cabeza.xcor() 
+        cabeza.setx(x-20)
+    if cabeza.direction == "right":
+        x=cabeza.xcor() 
+        cabeza.setx(x+20)
 
-    def render(self, surface):
-        pygame.draw.rect(surface, self.color, (self.position[0], self.position[1], GRIDSIZE, GRIDSIZE))
+#Teclado
+ven.listen()    
+ven.onkeypress(arriba, "Up")
+ven.onkeypress(abajo, "Down")
+ven.onkeypress(izquierda, "Left")
+ven.onkeypress(derecha, "Right")
 
+while True:
+    ven.update()
 
-# Direcciones
-UP = (0, -1)
-DOWN = (0, 1)
-LEFT = (-1, 0)
-RIGHT = (1, 0)
+    if cabeza.distance(Comida)<20:
+       x= random.randint(-280,280)
+       y= random.randint(-280,280)
+       Comida.goto(x,y)
+    mov()
+    time.sleep(posponer)
 
-# Configuración
-GRIDSIZE = 20
-GRID_WIDTH = WIDTH // GRIDSIZE
-GRID_HEIGHT = HEIGHT // GRIDSIZE
-
-# Bucle principal
-def main():
-    clock = pygame.time.Clock()
-    snake = Snake()
-    apple = Apple()
-
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP:
-                    snake.direction = UP
-                elif event.key == pygame.K_DOWN:
-                    snake.direction = DOWN
-                elif event.key == pygame.K_LEFT:
-                    snake.direction = LEFT
-                elif event.key == pygame.K_RIGHT:
-                    snake.direction = RIGHT
-
-        snake.update()
-        if snake.get_head_position() == apple.position:
-            snake.length += 1
-            apple.randomize_position()
-
-        screen.fill(BLACK)
-        snake.render(screen)
-        apple.render(screen)
-        pygame.display.update()
-        clock.tick(10)
-
-if __name__== "__main__":
-    main()
+turtle.mainloop()
