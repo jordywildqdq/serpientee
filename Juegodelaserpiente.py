@@ -3,7 +3,9 @@ import time
 import random
 
 posponer = 0.1
-
+#variable de marcador
+score=0
+highscore=0
 # Configuración de la ventana
 
 ven = turtle.Screen()
@@ -20,10 +22,20 @@ Comida.color("Red")
 Comida.penup()
 Comida.goto(0, 100)
 
-# cuerpo de la serpiente
+
 segmentos = []
 
-# Diseño de la cabeza de la serpiente
+#Marcador de puntuacion
+text= turtle.Turtle()
+text.speed(0)
+text.color("White")
+text.penup()
+text.goto(0,260)
+text.hideturtle()
+text.write("Score=0    High Score=0" , align="center", font=("Courier", 24, "normal"))
+
+
+# Diseño de la cabeza de la serpient
 cabeza = turtle.Turtle()
 cabeza.speed(0)
 cabeza.shape("square")
@@ -77,9 +89,15 @@ while True:
         # Esconder los segmentos
         for seg in segmentos:
             seg.hideturtle()
-            seg.goto(1000, 1000)  # Mover fuera del alcance
+            seg.goto(1000, 1000)  
         # Limpiar lista
         segmentos.clear()
+
+        #Resetear marcador
+        score = 0
+        text.clear()
+        text.write("Score: {}       High Score: {}".format(score,highscore), 
+            align = "center", font =("Courier", 20, "normal"))
 
     if cabeza.distance(Comida) < 20:
         x = random.randint(-280, 280)
@@ -91,6 +109,17 @@ while True:
         nuevo_segmento.penup()
         nuevo_segmento.color('grey')
         segmentos.append(nuevo_segmento)
+    #Aumento de puntaje
+        score += 10
+
+        if score > highscore:
+            highscore = score
+            
+        text.clear()
+        text.write("Score: {}       High Score: {}".format(score, highscore), 
+                align = "center", font =("Courier", 20, "normal"))
+            
+
 
     # Mover el cuerpo de la serpiente
     totalSeg = len(segmentos)
@@ -104,9 +133,31 @@ while True:
         y = cabeza.ycor()
         segmentos[0].goto(x, y)
 
-    
-    
     mov()
+
+    for segmento in segmentos:
+        if segmento.distance(cabeza) < 20:
+            time.sleep(1)
+            cabeza.goto(0,0)
+            cabeza.direction = 'stop'
+
+            #Eiminar los segmentos.
+            for segmento in segmentos:
+                segmento.hideturtle()
+
+            #Limpiar segmaentos
+            segmentos.clear()
+            #Resetear marcador
+            score = 0
+        text.clear()
+        text.write("Score: {}       High Score: {}".format(score,highscore), 
+            align = "center", font =("Courier", 20, "normal"))
+
+        
+        
+    
+    
+
     time.sleep(posponer)
 
 turtle.mainloop()
