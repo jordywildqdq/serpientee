@@ -1,0 +1,56 @@
+Datos del Grupo:
+
+Integrantes: Jordy Moreira
+Programa a Elegir: EL juego de la serpiente
+Lenguaje a usar: Python
+
+Objetivo del Programa:
+
+El programa es un juego simple de la serpiente implementado en Python utilizando la biblioteca Turtle.
+El objetivo del juego es controlar la serpiente para que coma manzanas y, al hacerlo, aumentar el puntaje. 
+También hay una manzana amarilla que aparece después de cada 5 manzanas consumidas, activando una velocidad doble temporal si se consume.
+
+Principales Funcionalidades:
+
+Configuración de la Ventana:
+
+Se utiliza Turtle para configurar la ventana del juego con un fondo negro y dimensiones de 600x600 píxeles
+
+Elementos del Juego:
+
+La serpiente está representada por segmentos y dirigida por una cabeza.
+Hay dos tipos de manzanas: una roja (Comida) y una amarilla (manzana_amarilla).
+
+Movimiento de la Serpiente:
+
+La serpiente se mueve en la dirección especificada por el jugador (arriba, abajo, izquierda, derecha).
+La cabeza y el cuerpo de la serpiente se actualizan en cada ciclo del bucle principal.
+Colisiones:
+
+Colisión con bordes: 
+
+Si la serpiente choca con los bordes de la ventana, se reinicia el juego.
+Colisión con la comida (roja y amarilla): Aumenta el puntaje y realiza acciones específicas (por ejemplo, velocidad doble o aparición/desaparición de manzana amarilla).
+Colisión consigo misma: Si la cabeza de la serpiente choca con su cuerpo, se reinicia el juego.
+Puntaje:
+
+Se mantiene un marcador de puntaje y un récord alto.
+
+Velocidad Doble:
+
+Se activa temporalmente después de comer la manzana amarilla.
+La velocidad vuelve a la normalidad después de un período especificado.
+
+Funciones Auxiliares:
+
+Varias funciones auxiliares para la manipulación de elementos del juego, como crear segmentos, incrementar el contador de manzanas comidas y mostrar/desaparecer la manzana amarilla.
+Configuración del Teclado:
+
+Se configuran las teclas para controlar la dirección de la serpiente.
+
+Bucle Principal:
+
+Un bucle whileque actualiza constantemente la ventana y maneja las interacciones del juego.
+Despedida de Turtle:
+
+Al final, el programa se cierra utilizando turtle.bye().
